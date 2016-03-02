@@ -60,7 +60,13 @@ temp1=$temp_dir/clim_temp.$$.nc
 temp2=$temp_dir/time_series_temp.$$.nc
 
 # restrict input to required year dates
-cdo seldate,$startdate"-1-1",$enddate"-31-12" $sstfile $tempinput
+# cdo seldate,$startdate"-1-1",$enddate"-31-12" $sstfile $tempinput
+DATE_ARG="$startdate-1-1,$enddate-31-12"
+cdo seldate,$DATE_ARG $sstfile $tempinput
+if [ ! -f $tempinput ]; then
+	echo "ERROR: 'cdo seldate,$DATE_ARG $sstfile $tempinput' did not create output file; abort"
+	exit 1
+fi
 
 # Check years present in the input file
 years=$(cdo showyear ${tempinput})
