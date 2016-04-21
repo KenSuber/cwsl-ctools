@@ -20,8 +20,15 @@ def plot(title,variable,ifile,ofile):
     Based on example from http://matplotlib.org/examples/api/date_demo.html
     """
 
-    fin = cdms2.open(ifile,'r')
-    data = fin(variable,squeeze=1)
+    try:
+        fin = cdms2.open(ifile,'r')
+    except:
+        raise Exception("Error opening CDMS file %s" % ifile)
+
+    try:
+        data = fin(variable,squeeze=1)
+    except:
+        raise Exception("Error reading variable '%s' from CDMS file %s" % (variable, ifile))
 
     #Convert time axis to datetime
     time_axis = [datetime.datetime(d.year,d.month,d.day) for d in data.getAxis(0).asComponentTime()]

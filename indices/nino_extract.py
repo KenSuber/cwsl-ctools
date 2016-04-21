@@ -31,6 +31,14 @@ def main(input_list, outfile_name):
         inds = nc4.Dataset(infile)
         model_name = inds.model_id
 
+        if "tos" not in inds.variables:
+            print "Error:  No 'tos' variable in file %s" % infile
+            raise Exception("No 'tos' variable in file %s" % infile)
+
+        if "time" not in inds.variables:
+            print "Error:  No 'time' variable in file %s" % infile
+            raise Exception("No 'time' variable in file %s" % infile)
+
         in_var = inds.variables["tos"]
         time_var = inds.variables["time"]
 
